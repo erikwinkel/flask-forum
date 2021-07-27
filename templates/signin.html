@@ -1,0 +1,12 @@
+{% extends 'base.html'%}
+
+{% block body %}
+
+<h1>Sign In</h1>
+<form method="POST">
+    <input name="name" autocomplete="off" type="text" placeholder="username or email">
+    <input name="password" type="password" placeholder="password">
+    <input type="submit" value="Sign In">
+</form>
+
+{% endblock %}
