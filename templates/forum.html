@@ -40,12 +40,6 @@
   </div>
 </div>
 
-
-
-
-
-{% for thread in threads %}
-
 <div class="list-group">
     {% for thread in threads %}
     <a href="/threads/{{thread.id}}" class="list-group-item list-group-item-action" aria-current="true">
@@ -65,6 +59,4 @@
       </a>
     {% endfor %}
 </div>
-
-{% endfor %}
 {% endblock %}
