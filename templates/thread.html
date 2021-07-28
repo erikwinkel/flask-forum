@@ -58,7 +58,7 @@
           <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="editThreadLabel">Are you sure you want to delete this thread?</h5>
+                  <h5 class="modal-title" id="deleteThreadLabel">Are you sure you want to delete this thread?</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -114,8 +114,48 @@
         </div>
         {% if g.username == post.user.username%}
         <div class="card-footer text-muted d-flex flex-row-reverse"> 
-            <button type="button" class="btn btn-dark mx-1">Edit</button>
-            <button type="button" class="btn btn-dark mx-1">Delete</button>
+            <button type="button" class="btn btn-dark mx-1" data-bs-toggle="modal" data-bs-target="#editPostModal">Edit</button>
+            <button type="button" class="btn btn-dark mx-1" data-bs-toggle="modal" data-bs-target="#deletePostModal">Delete</button>
+        </div>
+
+        <div class="modal fade" id="deletePostModal" tabindex="-1" aria-labelledby="deletePostLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="deletePostLabel">Are you sure you want to delete this post?</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                  <a href="/posts/{{post.id}}/delete">
+                    <button type="submit" class="btn btn-primary">Yes, delete this post</button>    
+                  </a>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="editPostModal" tabindex="-1" aria-labelledby="editPostLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="POST" action="/posts/{{post.id}}">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="editPostLabel">Edit Post</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="mb-2">
+                    <label for="content" class="form-label">Content</label>
+                    <textarea type="content" class="form-control" id="content" name="content">{{post.content}}</textarea>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Edit post</button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
         {% endif %}
     </div>

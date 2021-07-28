@@ -91,13 +91,15 @@ def show_thread(thread_id):
     if request.method == "GET":
         thread = Thread.query.get(thread_id)
         parent = thread.forum
-        posts = Post.query.filter_by(thread_id=thread_id).order_by(Post.created_at.desc()).all()
+        posts = Post.query.filter_by(thread_id=thread_id).order_by(Post.created_at).all()
         return render_template('thread.html',posts=posts,thread=thread,parent=parent)
     if request.method == "POST":
         if g.user_id:
             content = request.form["content"]
             new_post = Post(thread_id, g.user_id, content)
             db.session.add(new_post)
+            db.session.commit()
+            new_post.thread.last_reply = new_post.created_at
             db.session.commit()
         return redirect(f'/threads/{thread_id}')
 
@@ -121,3 +123,21 @@ def delete_thread(thread_id):
         db.session.delete(thread)
         db.session.commit()
     return redirect(f'/forums/{thread.forum_id}')
+
+@app.route('/posts/<post_id>', methods=["POST"])
+def edit_post(post_id):
+    post = Post.query.get(post_id)
+    if g.user_id == post.user_id:
+        post.content = request.form["content"]
+        post.edited_at = datetime.datetime.now()
+        db.session.commit()
+    return redirect(f'/threads/{post.thread_id}')
+
+@app.route('/posts/<post_id>/delete')
+def delete_post(post_id):
+    post = Post.query.get(post_id)
+    thread_id = post.thread_id
+    if g.user_id == post.user_id:
+        db.session.delete(post)
+        db.session.commit()
+    return redirect(f'/threads/{thread_id}')
