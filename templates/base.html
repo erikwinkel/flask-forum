@@ -6,8 +6,13 @@
 <body>
     <header>
         <a href="/">Home</a>
-        <a href="/register">Register</a>
-        <a href="/signin">Sign in</a>
+        {% if g.username %}
+            <p>Hello, {{g.username}}!</p>
+            <a href="/signout">Sign out</a>
+        {% else %}
+            <a href="/register">Register</a>
+            <a href="/signin">Sign in</a>
+        {% endif %}
     </header>
     {% block body %}{% endblock %}
 </body>

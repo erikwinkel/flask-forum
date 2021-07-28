@@ -2,6 +2,12 @@
 
 {% block body %}
 
-Welcome to the index
-
+{% for forum in forums %}
+<div>
+    <a href="/forums/{{forum.id}}">
+        <h3>{{forum.name}}</h3>
+    </a>
+    <p>{{forum.description}}</p>
+</div>
+{% endfor %}
 {% endblock %}
