@@ -1,19 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Flask Forum</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-    <header>
-        <a href="/">Home</a>
-        {% if g.username %}
-            <p>Hello, {{g.username}}!</p>
-            <a href="/signout">Sign out</a>
-        {% else %}
-            <a href="/register">Register</a>
-            <a href="/signin">Sign in</a>
-        {% endif %}
-    </header>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Home</a>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% if parent %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/forums/{{parent.id}}">{{parent.name}}</a>
+                </li>
+                {% endif %}
+            </ul>
+            <div>
+                {% if g.username %}
+                    <p class="text-light">Hello, {{g.username}}!</p>
+                    <a href="/signout"><button class="btn btn-outline-light">Sign Out</button></a>
+                {% else %}
+                    <a href="/register"><button class="btn btn-outline-light">Register</button></a>
+                    <a href="/signin"><button class="btn btn-outline-light">Sign In</button></a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
     {% block body %}{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

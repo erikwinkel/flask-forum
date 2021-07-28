@@ -1,0 +1,126 @@
+{% extends 'base.html'%}
+
+{% block body %}
+
+<div class="mx-5 mt-2 d-flex justify-content-between">
+    <div>
+      <h3>{{thread.title}}</h3>
+    </div>
+    {% if g.user_id %}
+    <button type="button" class="btn btn-dark my-auto" data-bs-toggle="modal" data-bs-target="#newThreadModal">
+      Reply to thread
+    </button>
+    {% endif %}
+  </div>
+  
+  <div class="modal fade" id="newThreadModal" tabindex="-1" aria-labelledby="newThreadLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="POST">
+          <div class="modal-header">
+            <h5 class="modal-title" id="newThreadLabel">Reply</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-2">
+              <textarea type="content" class="form-control" id="content" name="content"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Post reply</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+<div>
+    <div class="card m-3">
+        <div class="card-header d-flex justify-content-between">
+            <h5>{{thread.user}}</h5>
+            <p>Created at: {{thread.created_at}}</p>
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{thread.content}}</p>
+            {% if thread.edited_at %}
+            <br><small>Edited at: {{thread.edited_at}}</small>
+            {% endif %}
+        </div>
+        {% if g.username == thread.user.username%}
+        <div class="card-footer text-muted d-flex flex-row-reverse">
+            <button type="button" class="btn btn-dark mx-1" data-bs-toggle="modal" data-bs-target="#editThreadModal">Edit</button>
+            <button type="button" class="btn btn-dark mx-1"  data-bs-toggle="modal" data-bs-target="#deleteThreadModal">Delete</button>
+        </div>
+
+        <div class="modal fade" id="deleteThreadModal" tabindex="-1" aria-labelledby="deleteThreadLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="editThreadLabel">Are you sure you want to delete this thread?</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                  <a href="/threads/{{thread.id}}/delete">
+                    <button type="submit" class="btn btn-primary">Yes, delete this thread</button>    
+                  </a>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="editThreadModal" tabindex="-1" aria-labelledby="editThreadLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="POST" action="/threads/{{thread.id}}/edit">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="editThreadLabel">Edit Thread</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="mb-2">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" value="{{thread.title}}">
+                  </div>
+                  <div class="mb-2">
+                    <label for="content" class="form-label">Content</label>
+                    <textarea type="content" class="form-control" id="content" name="content">{{thread.content}}</textarea>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Edit thread</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    {% for post in posts %}
+    <div class="card m-3">
+        <div class="card-header d-flex justify-content-between">
+            <h5>{{post.user}}</h5>
+            <p>Created at: {{post.created_at}}</p>
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{post.content}}</p>
+            {% if post.edited_at %}
+            <br><small>Edited at: {{post.edited_at}}</small>
+            {% endif %}
+        </div>
+        {% if g.username == post.user.username%}
+        <div class="card-footer text-muted d-flex flex-row-reverse"> 
+            <button type="button" class="btn btn-dark mx-1">Edit</button>
+            <button type="button" class="btn btn-dark mx-1">Delete</button>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

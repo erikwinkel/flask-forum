@@ -1,13 +1,15 @@
 {% extends 'base.html'%}
 
 {% block body %}
-
-{% for forum in forums %}
-<div>
-    <a href="/forums/{{forum.id}}">
-        <h3>{{forum.name}}</h3>
-    </a>
-    <p>{{forum.description}}</p>
+<div class="list-group">
+    {% for forum in forums %}
+    <a href="/forums/{{forum.id}}" class="list-group-item list-group-item-action" aria-current="true">
+        <div class="d-flex w-300 justify-content-between">
+          <h5 class="mb-1">{{forum.name}}</h5>
+          <small>{{'0' if forum.threads == None else forum.threads|length}} threads</small>
+        </div>
+        <p class="mb-1">{{forum.description}}</p>
+      </a>
+    {% endfor %}
 </div>
-{% endfor %}
 {% endblock %}

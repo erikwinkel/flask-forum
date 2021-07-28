@@ -16,6 +16,9 @@ class User(db.Model):
         self.email = email
         self.password = password
 
+    def __repr__(self):
+        return self.username
+
 class Thread(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     forum_id = db.Column(db.Integer, db.ForeignKey('forum.id'), nullable = False)
@@ -33,6 +36,7 @@ class Thread(db.Model):
         self.user_id = user_id
         self.content = content
         self.created_at = datetime.datetime.now()
+        self.last_reply = self.created_at
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -1,0 +1,70 @@
+{% extends 'base.html'%}
+
+{% block body %}
+<div class="mx-5 d-flex justify-content-between">
+  <div>
+    <h3>{{forum.name}}</h3>
+    <h5>{{forum.description}}</h5>
+  </div>
+  {% if g.user_id %}
+  <button type="button" class="btn btn-dark my-auto" data-bs-toggle="modal" data-bs-target="#newThreadModal">
+    Create new thread
+  </button>
+  {% endif %}
+</div>
+
+<div class="modal fade" id="newThreadModal" tabindex="-1" aria-labelledby="newThreadLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST">
+        <div class="modal-header">
+          <h5 class="modal-title" id="newThreadLabel">New Thread</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-2">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" name="title">
+          </div>
+          <div class="mb-2">
+            <label for="content" class="form-label">Content</label>
+            <textarea type="content" class="form-control" id="content" name="content"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Post thread</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+{% for thread in threads %}
+
+<div class="list-group">
+    {% for thread in threads %}
+    <a href="/threads/{{thread.id}}" class="list-group-item list-group-item-action" aria-current="true">
+        <div class="d-flex w-75 justify-content-between">
+          <div>
+            <h5 class="mb-1">{{thread.title}}</h5>
+            <p class="mb-1">{{thread.user}}</p>
+            <small>Created at: {{thread.created_at}}</small>
+          </div>
+          <div>
+              <small>{{'0' if thread.posts == None else thread.posts|length}} replies</small><br>
+              {% if thread.posts %}
+              <small>Last Reply: {{thread.last_reply}}</small>
+              {% endif %}
+          </div>
+        </div>
+      </a>
+    {% endfor %}
+</div>
+
+{% endfor %}
+{% endblock %}
